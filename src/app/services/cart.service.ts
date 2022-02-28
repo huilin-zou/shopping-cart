@@ -51,7 +51,28 @@ export class CartService {
 
   }
 
-  decreaseProduct(product){}
+  decreaseProduct(product){
 
-  removeProduct(product){}
+    for(const [index,p] of this.cart.entries()){
+
+      if(p.id===product.id){
+        p.amount-=1;
+        // eslint-disable-next-line eqeqeq
+        if(p.amount==0){
+          this.cart.splice(index,1);
+        }
+      }
+    }
+
+    this.cartItemCount.next(this.cartItemCount.value-1);
+  }
+
+  removeProduct(product){
+    for(const [index, p] of this.cart.entries()){
+      if(p.id === product.id){
+        this.cartItemCount.next(this.cartItemCount.value-p.amount);
+        this.cart.splice(index,1);
+      }
+    }
+  }
 }
